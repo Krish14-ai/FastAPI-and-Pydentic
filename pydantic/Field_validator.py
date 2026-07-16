@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field, AnyUrl, field_validator
+from pydantic import BaseModel, EmailStr, Field, AnyUrl, field_validator, model_validator
 from typing import Annotated, Dict, List, Optional
 
 class Patient(BaseModel):
@@ -12,11 +12,11 @@ class Patient(BaseModel):
     profile_link : AnyUrl  = None
     allergies : Annotated[List[str], Field(max_length= 10,default= None)]
     contact : Dict[str, str]
-    emergency_num = Dict[str,str]
+    emergency_num : Dict[str,str]
 ##--------------------------------------------------------------
 
     ## Name Validator 
-    
+
     @field_validator("name")
     @classmethod
     def name_validator(cls,name):
@@ -50,7 +50,17 @@ class Patient(BaseModel):
             return value
         else: 
             raise ValueError("enter age in range of 1 to 150")
+        
 
+##---------------------------------------------------------------
+
+## Checking for emergency contact number for patients who are above 60 years of age 
+    @model_validator(mode = "after")
+    def emergency_contact(value):
+        if value.age > 60 and 'emergency_num' not in value.emergency_num:
+            raise  ValueError("Patients older that 60 years must have an Emergency contact")
+        else : 
+            return value
 ##--------------------------------------------------------------
     ## info
     def show_details(info : Patient):
@@ -65,7 +75,8 @@ patient_1 = {
     "gender": 'Male',
     "email" : "krish@gmail.com",
     "contact" : {"Number_1 " : "123456789"}, 
-    "insurance" : True
+    "insurance" : True,
+    "emergency_num": {"Son":"987654321"}
 
 }
 
