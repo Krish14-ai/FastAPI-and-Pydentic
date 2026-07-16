@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, EmailStr
-from typing import Dict, List, Optional, Annotated, 
+from typing import  List, Optional, Annotated
 
 
 class Address(BaseModel):
@@ -12,7 +12,7 @@ class Patient(BaseModel):
     name : Annotated[str, Field(..., max_length = 100)]
     age : Annotated[int,Field(..., ge = 0)]
     gender : str
-    email: Optional[EmailStr] 
+    email: EmailStr = "anc@gmail.com"
     address: Address
     contact : List[str]
 
@@ -54,8 +54,8 @@ print("Filtered data : " ,temp_filtered)
 
 ## If we want to exclude some data
 temp_excluded = patient_1.model_dump(exclude=['name','age'])
-print("Excluded : ",temp_excluded)
+print("Excluded : ",temp_excluded,'\n')
 
 ## If we want to exclude unset default vlaues
 exclude_unset = patient_1.model_dump(exclude_unset= True)
-print(exclude_unset)
+print("Unset Values: ",exclude_unset)
