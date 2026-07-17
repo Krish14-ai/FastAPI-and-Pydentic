@@ -1,43 +1,66 @@
-from pydantic import BaseModel, EmailStr, AnyUrl, Field
-from typing import List,Dict, Optional, Annotated
-
+from pydantic import BaseModel, Field, field_validator, AnyUrl, EmailStr
+from typing import List, Dict, Annotated, Optional
 
 class Patient(BaseModel):
-
-    name : Annotated[str,Field(...,max_length= 100,title  = "Name of the Patient",
- description="Give the name of patient under 100 characters")]
-    
-    age :Annotated[ int , Field(..., ge = 0, le= 150,strict= True)]
-    weight : Annotated[float,Field(..., ge = 0,le = 500,strict= True)]
-    sex : str
-    married : Annotated[bool, Field(default= False)]
+    name :  Annotated[str, Field(...,max_length= 100 )]
+    age : Annotated[int, Field(..., ge = 0 , le = 150)]
+    gender : str = Field(...)
     email : EmailStr
-    contact : Dict[str , str] 
-    allergies : Annotated[Optional[List[str]], Field(default= None, max_length= 30)]
+    allergies : Optional[List[str]] 
+    contact : Dict[str, str]
     docs : AnyUrl
-
     
-##--------------------------------------------------------------
-    def insert_to_db(patient: Patient):
-        print(patient.name,
-               patient.age,
-               patient.married,
-                 patient,)
+##--------------------------------------------------------------------------------
+    ## Name validator
+    @field_validator("name")
+    @classmethod
+    def name_validator(cls, name : str):
 
-##---------------------------------------------------------------
-
-patient_1 = {"name":"Krish",
-            "age" : 20,
-             "email" : "krish@gmail.com",
-             "sex" : 'Male',
-             "weight": 56.75,
-             "married" : False,
-             "email" : "krish@gmail.com",
-             "allergies": ['penuts','pollen','flowers'],
-             "docs" : "https://www.google.com",
-             "contact" : {"Ph_1" : "1234567890"}
-              }
-patient = Patient(**patient_1)
-Patient.insert_to_db(patient)
-
+        if len(name) > 100 : 
+            raise ValueError("Please enter a valid name under 100 characters ")
         
+        else :
+            return name
+##--------------------------------------------------------------------------------
+
+    ## Age Validator
+    @field_validator("age")
+    @classmethod
+    def age_validator(cls, age: int)-> int:
+
+        if  0 < age < 150:
+             return age 
+        
+        else : 
+            raise ValueError("Enter a valid age that is below 150 and above 0")
+##--------------------------------------------------------------------------------
+
+    ## Email Validator
+    @field_validator("email")
+    @classmethod
+    def email_validator(cls, email : str)-> str:
+
+        domain_name = str(email).split('@')[-1].lower()
+        domains = ['hamster.com', 'cornhub.com','gmail.com']
+
+        if domain_name not in domains:
+            raise ValueError("Please Enter a Valid Domin in your email")
+        else : 
+            return email
+
+
+##--------------------------------------------------------------------------------
+
+patient_1 = {
+    "name" : "Krish",
+    "age" : 20,
+    "gender" : 'Male',
+    "email" : "Krish@GMAIL.com",
+    "contact" : {"phone_1" : "123456789"},
+    "docs" : "https://www.google.com/", 
+    "allergies" : ['none']
+
+}
+
+info = Patient(**patient_1)
+print(info)
