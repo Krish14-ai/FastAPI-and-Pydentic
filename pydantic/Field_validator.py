@@ -14,4 +14,15 @@ class Patient(BaseModel):
     allergies : Annotated[List[str], Field(max_length= 10,default= None)]
     contact : Dict[str, str]
     emergency_num : Optional[Dict[str,str]]
+##--------------------------------------------------------------
+
+    ## Name Validator 
+
+    @field_validator("name")
+    @classmethod
+    def name_validator(cls,name):
+        if len(name) not in range(20):
+            raise NameError("Entere a valide name")
+        else : 
+            return name.lower()       
 
