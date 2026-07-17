@@ -63,4 +63,34 @@ class Patient(BaseModel):
         else : 
             return value
         
+##--------------------------------------------------------------
+   ## Computed Fields
+    @computed_field
+    @property
+    def bmi(value)-> float:
+        bmi = round(value.weight / value.height**2,2)
+        return bmi
+
+##--------------------------------------------------------------
+    ## info
+    def show_details(info : Patient):
+        print(info)
+
+##------------------------------------------------------------------------------
+
+patient_1 = {
+    "name" : "Krish",
+    "age": 23, 
+    "weight" : 60,   
+    "height" : 1.63,
+    "gender": 'Male',
+    "email" : "krish@gmail.com",
+    "contact" : {"Number_1 " : "123456789"}, 
+    "insurance" : True,
+    "emergency_num": {"Son":"987654321"}
+
+}
+
+info = Patient(**patient_1)
+Patient.show_details(info)
 
