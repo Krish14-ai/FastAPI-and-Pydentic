@@ -26,3 +26,41 @@ class Patient(BaseModel):
         else : 
             return name.lower()       
 
+##--------------------------------------------------------------
+
+    ## Email Validator
+
+    @field_validator('email')
+    @classmethod
+    def email_validator(cls, value):
+        valid_domains = ['hdfc.com','icici.com','gmail.com']
+        domain_name = value.split('@')[-1]
+
+        if domain_name not in valid_domains:
+            print("Its not a valid domain")
+            raise ValueError("Enter a propper mail")
+        return  value
+##--------------------------------------------------------------
+
+    ## Age Validator
+
+    @field_validator( 'age' ,mode = "after")
+    @classmethod
+    def age_validator(cls , value): 
+        if 0 < value < 150:  
+            return value
+        else: 
+            raise ValueError("enter age in range of 1 to 150")
+        
+
+##---------------------------------------------------------------
+
+## Checking for emergency contact number for patients who are above 60 years of age 
+    @model_validator(mode = "after")
+    def emergency_contact(value):
+        if value.age > 60 and 'emergency_num' not in value.emergency_num:
+            raise  ValueError("Patients older that 60 years must have an Emergency contact")
+        else : 
+            return value
+        
+
