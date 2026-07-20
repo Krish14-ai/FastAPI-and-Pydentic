@@ -1,9 +1,12 @@
 from fastapi import FastAPI,Query, HTTPException
-from typing import Annotated, Dict,List, Literal
+from fastapi.responses import JSONResponse
+
+from typing import Annotated,List, Literal
 import json
+
 from datetime import date
 from pydantic import Field, BaseModel, computed_field
-
+##----------------------------------------------------------------------
 class Patient(BaseModel):
     patient_id : str
     first_name : Annotated[
@@ -31,6 +34,7 @@ class Patient(BaseModel):
 ]
     vitals : Vitals
     clinical_data : ClinicalData
+
     @computed_field
     @property
     def classification(self) -> str :
@@ -38,7 +42,7 @@ class Patient(BaseModel):
             return "minor"
         elif 18 <= self.age < 50: 
             return "adult"
-        elif self.age > 50  :
+        else:
             return "senior_citizen"
         
 
@@ -68,9 +72,23 @@ def login_page():
 
 @app.post("/create")
 def create_patient(patient : Patient):
-    pass 
+    ## 1 Load Data
+    data = load_data()
+    if patient.id in data:
+         raise HTTPException(status_code = 404, detail = "The patient already Exists!")
+    
+    ## Save Data
+    save_data(patient)
 
 
+## Saving Data
+def save_data(data):
+     with open('C:\Users\Krish\Downloads\FastApi\FastAPI\patients.json','w') as f:
+          json.dump(data,f)
+    
+
+
+## Loading Data
 def load_data():
     path = r"C:\Users\Krish\Downloads\FastApi\FastAPI\patients.json"
     data = {}
