@@ -79,9 +79,3 @@ def load_data():
     return data
 
 alnls
-m 
-ajlnsd
-lsadnflsdn\
-alsmflsdaf
-lmnslmnasl
-sdl fsd
