@@ -27,7 +27,7 @@ class Patient(BaseModel):
         elif self.age > 50  :
             return "senior_citizen"
         
-
+##---------------------------------------------------------------
 
 
 app = FastAPI()
@@ -37,7 +37,9 @@ def login_page():
     data = load_data()
     return data
 
-@app.post
+@app.post("/create")
+def create_patient(patient : Patient):
+    pass 
 
 
 def load_data():
