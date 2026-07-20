@@ -1,22 +1,36 @@
 from fastapi import FastAPI,Query, HTTPException
 from typing import Annotated, Dict,List, Literal
 import json
-
+from datetime import date
 from pydantic import Field, BaseModel, computed_field
 
 class Patient(BaseModel):
     patient_id : str
-    name : Annotated[str, Field(..., description="Please enter your name", max_length= 100)]
-    last_name : Annotated[str, Field(..., description="Enter your last name")]
-    age : Annotated[int,Field(... , description = "Enter your age ", ge =0, le= 150)]
+    first_name : Annotated[
+            str, 
+            Field(..., description="Please enter your name", max_length= 100)
+            ]
+    last_name : Annotated[
+                str,
+                Field(..., description="Enter your last name")
+                ]
+    
+    age : Annotated[
+                int,
+                Field(... , description = "Enter your age ", ge =0, le= 150)]
 
-    gender : Annotated[Literal["male", "female", "others"], str, Field(..., description= " Enter your sex")]
-    blood_group : str
-    vitals:Annotated[ Dict[str : float], Field(..., strict = False,description= "Plese enter your vitals")]
-    clinical_data = Dict[str, str]
-    status : str
-    admission_date : str
-
+    gender : Annotated[
+        Literal["Male", "Female", "Others"], 
+        Field(..., description= " Enter your sex")
+        ]
+    blood_group :Literal[
+                        "A+", "A-",
+                        "B+", "B-",
+                        "AB+", "AB-",
+                        "O+", "O-"
+]
+    vitals : Vitals
+    clinical_data : ClinicalData
     @computed_field
     @property
     def classification(self) -> str :
@@ -27,6 +41,21 @@ class Patient(BaseModel):
         elif self.age > 50  :
             return "senior_citizen"
         
+
+class Vitals(BaseModel):
+        blood_pressure: str
+        heart_rate_bpm: int
+        temperature_c: float
+        spO2_pct: int
+    
+class ClinicalData(BaseModel):
+        primary_diagnosis : str
+        allergies : List[str]
+        status : str
+        admission_date : date
+
+
+
 ##---------------------------------------------------------------
 
 
