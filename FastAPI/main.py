@@ -7,6 +7,20 @@ import json
 from datetime import date
 from pydantic import Field, BaseModel, computed_field
 ##----------------------------------------------------------------------
+
+
+class Vitals(BaseModel):
+        blood_pressure: str
+        heart_rate_bpm: int
+        temperature_c: float
+        spO2_pct: int
+    
+class ClinicalData(BaseModel):
+        primary_diagnosis : str
+        allergies : List[str]
+        status : str
+        admission_date : date
+
 class Patient(BaseModel):
     patient_id : str
     first_name : Annotated[
@@ -46,17 +60,6 @@ class Patient(BaseModel):
             return "senior_citizen"
         
 
-class Vitals(BaseModel):
-        blood_pressure: str
-        heart_rate_bpm: int
-        temperature_c: float
-        spO2_pct: int
-    
-class ClinicalData(BaseModel):
-        primary_diagnosis : str
-        allergies : List[str]
-        status : str
-        admission_date : date
 
 
 
@@ -71,22 +74,30 @@ def login_page():
     return data
 
 @app.post("/create")
-def create_patient(patient : Patient):
-    ## 1 Load Data
-    data = load_data()
-    if patient.id in data:
-         raise HTTPException(status_code = 404, detail = "The patient already Exists!")
-    
-    ## Save Data
-    save_data(patient)
+def create_patient(patient: Patient):
 
-    ## Report to Customer
-    JSONResponse(status_code= 201,content={"Response Created Successfully"} )
+    data = load_data()      # Existing patients (list)
 
+    # Check duplicate IDs
+    if any(p["patient_id"] == patient.patient_id for p in data):
+        raise HTTPException(
+            status_code=409,
+            detail="Patient already exists."
+        )
+
+    # Add new patient
+    data.append(patient.model_dump(mode="json"))
+
+    # Save updated list
+    save_data(data)
+
+    return {
+        "message": "Patient added successfully"
+    }
 
 ## Saving Data
 def save_data(data):
-     with open('C:\Users\Krish\Downloads\FastApi\FastAPI\patients.json','w') as f:
+     with open(r"C:\Users\Krish\Downloads\FastApi\FastAPI\patients.json",'w') as f:
           json.dump(data,f)
     
 
