@@ -80,6 +80,9 @@ def create_patient(patient : Patient):
     ## Save Data
     save_data(patient)
 
+    ## Report to Customer
+    JSONResponse(status_code= 201,content={"Response Created Successfully"} )
+
 
 ## Saving Data
 def save_data(data):
