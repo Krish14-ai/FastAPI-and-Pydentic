@@ -7,7 +7,7 @@ import json
 from datetime import date
 from pydantic import Field, BaseModel, computed_field
 ##----------------------------------------------------------------------
-
+## Code for creating a patient
 
 class Vitals(BaseModel):
         blood_pressure: str
@@ -60,7 +60,8 @@ class Patient(BaseModel):
             return "senior_citizen"
         
 
-
+##----------------------------------------------------------------
+## Code for Updating patients data 
 
 
 ##---------------------------------------------------------------
@@ -95,14 +96,14 @@ def create_patient(patient: Patient):
         "message": "Patient added successfully"
     }
 
-## Saving Data
+## Saving patient's Data
 def save_data(data):
      with open(r"C:\Users\Krish\Downloads\FastApi\FastAPI\patients.json",'w') as f:
           json.dump(data,f)
     
 
 
-## Loading Data
+## Loading patients Data
 def load_data():
     path = r"C:\Users\Krish\Downloads\FastApi\FastAPI\patients.json"
     data = {}
