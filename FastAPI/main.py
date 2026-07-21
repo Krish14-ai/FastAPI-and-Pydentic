@@ -1,7 +1,7 @@
 from fastapi import FastAPI,Query, HTTPException
 from fastapi.responses import JSONResponse
 
-from typing import Annotated,List, Literal
+from typing import Annotated,List, Literal, Optional
 import json
 
 from datetime import date
@@ -62,6 +62,20 @@ class Patient(BaseModel):
 
 ##----------------------------------------------------------------
 ## Code for Updating patients data 
+class Update_Patient( Vitals):
+     patient_id : Optional[str]
+     first_name : Annotated[Optional[str], Field(default=None)]
+     last_name : Annotated[Optional[str], Field(default = None)]
+     age : Annotated[Optional[int], Field(default = None)]
+     gender : Annotated[Literal["Male","Female", "Others"], Field(default = None)]
+     blood_group : Optional[Literal[
+                                "A+", "A-",
+                                "B+", "B-",
+                                "AB+", "AB-",
+                                "O+", "O-"
+ ]]
+     vitals : Annotated[Optional[Vitals], Field(default= None)]
+     clinical_data : Annotated[Optional[ClinicalData], Field(default = None)]
 
 
 ##---------------------------------------------------------------
@@ -111,3 +125,29 @@ def load_data():
         data = json.load(f)
     return data
 
+## Updating Patient
+@app.put("/edit/{patient_id}")
+def update_patient(patient_id : str, patient_update: Update_Patient):
+     
+     data = load_data()
+
+     for patient in data: 
+        
+        if patient["patient_id"] == patient_id:
+             
+             updates  = patient_update.model_dump(exclude_unset =  True)
+             
+             save_data(data)
+
+             return {
+                  "messege" : "Data Updated Successfully",
+                   "Patient" : patient
+                       }
+        
+     raise HTTPException(
+          status_code=404,
+          detail="Patient not found"
+     )
+
+             
+             
