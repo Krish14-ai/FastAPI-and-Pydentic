@@ -137,6 +137,8 @@ def update_patient(patient_id : str, patient_update: Update_Patient):
              
              updates  = patient_update.model_dump(exclude_unset =  True)
              
+             patient.update(updates)
+             
              save_data(data)
 
              return {
