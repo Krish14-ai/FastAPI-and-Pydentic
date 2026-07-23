@@ -79,7 +79,7 @@ class Update_Patient(BaseModel):
     last_name: Annotated[Optional[str], Field(default=None)]
     age: Annotated[Optional[int], Field(default=None)]
     gender: Annotated[
-        Optional[Literal["Male", "Female", "Others"]],
+        Optional[Literal["Female", "Male", "Others"]],
         Field(default=None)
     ]
 
@@ -157,6 +157,7 @@ def update_patient(patient_id: str, patient_update: Update_Patient):
 
     for patient in data:
 
+        i = 0
         if patient["patient_id"] == patient_id:
 
             updates = patient_update.model_dump(
@@ -165,15 +166,15 @@ def update_patient(patient_id: str, patient_update: Update_Patient):
             )
     
             patient.update(updates)
-            
-
+            print(patient)
+            data[i] = patient
             save_data(data)
 
             return {
                 "message": "Data Updated Successfully",
                 "Patient": patient
             }
-
+        i = i + 1
     raise HTTPException(
         status_code=404,
         detail="Patient not found"

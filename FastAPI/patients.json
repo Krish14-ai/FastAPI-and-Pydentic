@@ -1,8 +1,8 @@
 [
     {
-        "patient_id": "Krish",
-        "first_name": "string",
-        "last_name": "string",
+        "patient_id": "string",
+        "first_name": "Krish",
+        "last_name": "Khandelwal",
         "age": 0,
         "gender": "Male",
         "blood_group": "A+",
@@ -156,23 +156,25 @@
         "spO2_pct": 0
     },
     {
-        "patient_id": "PT-1008",
-        "first_name": "Hannah",
-        "last_name": "Abbott",
-        "age": 29,
-        "gender": "Female",
-        "blood_group": "B-",
+        "patient_id": "string",
+        "first_name": "Krish",
+        "last_name": "Khandelwal",
+        "age": 0,
+        "gender": "Male",
+        "blood_group": "A+",
         "vitals": {
-            "blood_pressure": "115/75",
-            "heart_rate_bpm": 78,
-            "temperature_c": 36.8,
-            "spO2_pct": 100
+            "blood_pressure": "string",
+            "heart_rate_bpm": 0,
+            "temperature_c": 0.0,
+            "spO2_pct": 0
         },
         "clinical_data": {
-            "primary_diagnosis": "Routine Prenatal Checkup",
-            "allergies": [],
-            "status": "Outpatient",
-            "admission_date": "2026-07-13"
+            "primary_diagnosis": "string",
+            "allergies": [
+                "string"
+            ],
+            "status": "string",
+            "admission_date": "2026-07-23"
         }
     },
     {
