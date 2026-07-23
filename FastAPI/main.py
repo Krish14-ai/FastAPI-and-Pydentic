@@ -163,8 +163,10 @@ def update_patient(patient_id: str, patient_update: Update_Patient):
                 exclude_unset=True,
                 mode="json"
             )
-
+            if patient["patient_id"] == patient_id
             patient.update(updates)
+            id = patient["patient_id"]
+            data[id] = patient
 
             save_data(data)
 
