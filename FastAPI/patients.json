@@ -264,23 +264,25 @@
         }
     },
     {
-        "patient_id": "PT-1013",
-        "first_name": "Daniel",
-        "last_name": "Park",
-        "age": 19,
-        "gender": "Male",
-        "blood_group": "O+",
+        "patient_id": "Dan",
+        "first_name": "string",
+        "last_name": "string",
+        "age": 0,
+        "gender": "Female",
+        "blood_group": "A+",
         "vitals": {
-            "blood_pressure": "120/76",
-            "heart_rate_bpm": 64,
-            "temperature_c": 36.7,
-            "spO2_pct": 100
+            "blood_pressure": "string",
+            "heart_rate_bpm": 0,
+            "temperature_c": 0.0,
+            "spO2_pct": 0
         },
         "clinical_data": {
-            "primary_diagnosis": "Mild Concussion",
-            "allergies": [],
-            "status": "Discharged",
-            "admission_date": "2026-07-11"
+            "primary_diagnosis": "string",
+            "allergies": [
+                "string"
+            ],
+            "status": "string",
+            "admission_date": "2026-07-24"
         }
     },
     {

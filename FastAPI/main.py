@@ -61,14 +61,12 @@ class Patient(BaseModel):
     @computed_field
     @property
     def classification(self) -> str:
-        if 0 < self.age < 18:
+        if 0 <= self.age < 18:
             return "minor"
         elif 18 <= self.age < 50:
             return "adult"
         else:
             return "senior_citizen"
-
-
 ##----------------------------------------------------------------
 ## Code for Updating patients data
 
@@ -152,29 +150,31 @@ def load_data():
 ## Updating Patient
 @app.put("/edit/{patient_id}")
 def update_patient(patient_id: str, patient_update: Update_Patient):
-
     data = load_data()
 
     for patient in data:
-
-        i = 0
         if patient["patient_id"] == patient_id:
-
-            updates = patient_update.model_dump(
-                exclude_unset=True,
-                mode="json"
-            )
-    
+            updates = patient_update.model_dump(exclude_unset=True, mode="json")
             patient.update(updates)
-            print(patient)
-            data[i] = patient
+            save_data(data)
+            return {"message": "Data Updated Successfully", "Patient": patient}
+
+    raise HTTPException(status_code=404, detail="Patient not found")
+
+@app.delete("/delete/{patient_id}")
+def delete_patient(patient_id: str):
+
+    data = load_data()
+    for patient in data:
+
+        if patient["patient_id"] == patient_id:
+            data.remove(patient)
             save_data(data)
 
-            return {
-                "message": "Data Updated Successfully",
-                "Patient": patient
-            }
-        i = i + 1
+            return JSONResponse(content={
+                "messege": "patient deleted"
+            }, status_code=200)
+
     raise HTTPException(
         status_code=404,
         detail="Patient not found"
