@@ -1,3 +1,8 @@
+## Step 1): Make a model
+## Step 2): Make API using FastAPI
+## Step 3): Make UI using streamlit
+
+
 import pandas as pd 
 import numpy as np 
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder, StandardScaler
