@@ -4,31 +4,32 @@ from sklearn.preprocessing import OneHotEncoder, LabelEncoder, StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_absolute_error, root_mean_squared_error
-
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import accuracy_score,classification_report
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 
 df = pd.read_csv(r"FastAPI\Insurance_premium_prediction_project\insurance.csv")
 
 print(df.isna().sum())
 
-X = df.drop(columns = ["expenses"])
-y = df["expenses"]
+X = df.drop(columns = ["insurance_premium_category"])
+y = df["insurance_premium_category"]
 ##---------------------------------------------------------------------------
 
 trf_1 = ColumnTransformer(transformers=[
-    ("Scaler", StandardScaler(), ["age", "bmi", "children"]),
-     ("encoder", OneHotEncoder(), ["sex", "smoker", "region"])
+    ("scaler", StandardScaler(), ["age", "weight", "height", "income_lpa"]),
+    ("encoder", OneHotEncoder(handle_unknown="ignore"), ["smoker", "city", "occupation"]),
 ])
 ##---------------------------------------------------------------------------
 
 
 pipe = Pipeline([
     ("preprocessor", trf_1),
-    ("model", RandomForestRegressor(random_state=42))
+    ("model", RandomForestClassifier(random_state=42))
 ])
 
+label = LabelEncoder()
+y = label.fit_transform(y)
 
 X_train, X_test, y_train, y_test = train_test_split(
     X,y, test_size= 0.2, random_state= 42
@@ -38,6 +39,11 @@ pipe.fit(X_train,y_train)
 
 y_pred = pipe.predict(X_test)
 
-print(mean_absolute_error(y_test, y_pred))
-print(root_mean_squared_error(y_pred, y_test))
+print(accuracy_score(y_test, y_pred))
+print(classification_report(y_pred, y_test))
 
+import pickle 
+
+pickle_model_path = "model.pkl"
+with open(pickle_model_path, "wb") as f:
+    pickle.dump(pipe,f)
