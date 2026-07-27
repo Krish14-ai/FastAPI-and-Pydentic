@@ -52,3 +52,5 @@ import pickle
 pickle_model_path = "model.pkl"
 with open(pickle_model_path, "wb") as f:
     pickle.dump(pipe,f)
+
+print(df["occupation"].unique())
