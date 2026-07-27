@@ -15,6 +15,8 @@ from sklearn.ensemble import RandomForestClassifier
 
 df = pd.read_csv(r"FastAPI\Insurance_premium_prediction_project\insurance.csv")
 
+df["bmi"]  = df["weight"] / df["height"]**2
+
 print(df.isna().sum())
 
 X = df.drop(columns = ["insurance_premium_category"])
