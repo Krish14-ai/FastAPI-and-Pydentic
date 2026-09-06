@@ -19,5 +19,5 @@ def get_product(id : int):
     return {"messege" : Product.get_product(id)}
 
 @app.get("/proucts")
-def list_products(name: str) -> str:
+def list_products(name: str, ):
     return name 
