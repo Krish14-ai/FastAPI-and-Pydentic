@@ -1,5 +1,5 @@
 import json
-from main import Update_Patient
+from FastAPI.practice.main import Update_Patient
 with open(r'C:\Users\Krish\Downloads\FastApi\FastAPI\patients.json', 'r') as f:
     data = json.load(f)
 

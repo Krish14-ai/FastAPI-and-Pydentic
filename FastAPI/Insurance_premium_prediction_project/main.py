@@ -12,8 +12,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score,classification_report
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
+from pathlib import Path
 
-df = pd.read_csv(r"FastAPI\Insurance_premium_prediction_project\insurance.csv")
+path = Path("..", "data", "patients.json")
+
+df = pd.read_json(path)
 
 df["bmi"]  = df["weight"] / df["height"]**2
 
