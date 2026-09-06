@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Query
 import Product
 
 app = FastAPI()
@@ -18,3 +18,6 @@ def get_everything():
 def get_product(id : int):
     return {"messege" : Product.get_product(id)}
 
+@app.get("/proucts")
+def list_products(name: str) -> str:
+    return name 
