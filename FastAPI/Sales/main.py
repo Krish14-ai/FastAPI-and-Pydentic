@@ -19,5 +19,5 @@ def get_product(id : int):
     return {"messege" : Product.get_product(id)}
 
 @app.get("/proucts")
-def list_products(name: str, ):
+def list_products(name: str = Query(default = None, min_length = 1, max_length = 75, description = "Search product by name (case insensitive)", ) ):
     return name 
