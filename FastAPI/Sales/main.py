@@ -19,11 +19,9 @@ def get_product(id : int):
     return {"message" : Product.get_product(id)}
 
 @app.get("/products")
-def list_products(name: str = Query( default = None, min_length = 1, max_length = 75, description  ="Search product by name (case insensitive)") ):
-
-    product = Product.get_all_products()
-    if name : 
+def list_products(name: str = Query(default=None, min_length=1, max_length=75, description="Search product by name (case insensitive)")):
+    products = Product.get_all_products()
+    if name:
         needle = name.strip().lower()
-        Product = [p for p in product if needle in p.get("name","")]
-
-    return name
+        products = [p for p in products if needle in p.get("name", "").lower()]
+    return products
