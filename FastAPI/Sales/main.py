@@ -18,10 +18,16 @@ def get_everything():
 def get_product(id : int):
     return {"message" : Product.get_product(id)}
 
+
+
 @app.get("/products")
 def list_products(name: str = Query(default=None, min_length=1, max_length=75, description="Search product by name (case insensitive)")):
     products = Product.get_all_products()
     if name:
         needle = name.strip().lower()
         products = [p for p in products if needle in p.get("name", "").lower()]
+        if not products:
+            raise HTTPException(status_code=404, detail=f"No product found named {name}")
+
     return products
+
