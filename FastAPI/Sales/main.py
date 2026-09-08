@@ -21,7 +21,9 @@ def get_product(id : int):
 
 
 @app.get("/products")
-def list_products(name: str = Query(default=None, min_length=1, max_length=75, description="Search product by name (case insensitive)")):
+def list_products(name: str = Query(default=None, min_length=1, max_length=75, description="Search product by name (case insensitive)"), 
+                  sort_by_price : bool = Query(default = "asc", description = "Sort products by price ") ):
+    
     products = Product.get_all_products()
     if name:
         needle = name.strip().lower()
