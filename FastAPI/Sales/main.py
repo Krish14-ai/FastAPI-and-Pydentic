@@ -36,8 +36,7 @@ def list_products(name: str = Query(default=None, min_length=1, max_length=75, d
 
     if sort_by_price : 
         reverse = order == "desc"
-        
-    
+        products = sorted(products,key = lambda p : p.get("price",0), reverse = reverse )
 
 
     return products
