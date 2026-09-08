@@ -35,10 +35,11 @@ def list_products(name: str = Query(default=None, min_length=1, max_length=75, d
         raise HTTPException(status_code=404, detail=f"No product found named {name}")
 
     if sort_by_price : 
-        reverse = order == "desc"
+        reverse = order == "desc"    ## for deciding Order
         products = sorted(products,key = lambda p : p.get("price",0), reverse = reverse )
 
-
-    return products
+    total = len(products)
+    
+    return {"total" : total, "Items" : products}
 
 
