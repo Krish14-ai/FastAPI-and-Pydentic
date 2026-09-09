@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Query, Path
 import Product
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Annotated
 
 
 app = FastAPI()
@@ -80,18 +81,19 @@ def get_product_by_id(product_id : str = Path(..., min_length = 1, max_length = 
             return p
     raise HTTPException(status_code = 404, detail = "Product not found")
 
+## -----------------------------------
+class Product_class(BaseModel):
+    id : int = 0
+    name : str = Annotated["", Field(max_length= 100, min_length= 0,)]
+## -----------------------------------
+
 
 @app.post("/products", status_code = 201)
-def create_product(product, Product):
+def create_product(product: Product_class):
     return product
 
 
 
 
-#============================================================================================================================
-## pydantic
-#============================================================================================================================
 
-class Product(BaseModel):
-    id : int 
-    name : str
+
