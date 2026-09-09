@@ -1,5 +1,7 @@
 from fastapi import FastAPI, HTTPException, Query, Path
 import Product
+from pydantic import BaseModel
+
 
 app = FastAPI()
 
@@ -80,5 +82,16 @@ def get_product_by_id(product_id : str = Path(..., min_length = 1, max_length = 
 
 
 @app.post("/products", status_code = 201)
-def create_product(product):
+def create_product(product, Product):
     return product
+
+
+
+
+#============================================================================================================================
+## pydantic
+#============================================================================================================================
+
+class Product(BaseModel):
+    id : int 
+    name : str
