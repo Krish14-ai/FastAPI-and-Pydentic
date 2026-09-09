@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Path
 import Product
 
 app = FastAPI()
@@ -70,7 +70,7 @@ def list_products(
 
 
 @app.get("/products/{product_id}")
-def get_product_by_id(product_id : str):
+def get_product_by_id(product_id : str = Path(..., min_length = 1, max_length = 2, description = "Product starts with 1")):
     products = Product.get_all_products()
 
     for p in products : 
