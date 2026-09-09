@@ -84,7 +84,7 @@ def get_product_by_id(product_id : str = Path(..., min_length = 1, max_length = 
 ## -----------------------------------
 class Product_class(BaseModel):
     id : int = 0
-    name : str = Annotated["", Field(max_length= 100, min_length= 0,)]
+    name : Annotated[str, Field(max_length= 100, min_length= 0, description= "Please Enter a product name")]
 ## -----------------------------------
 
 
