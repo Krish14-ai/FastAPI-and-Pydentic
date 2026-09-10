@@ -14,6 +14,7 @@ class Product_class(BaseModel):
                     ]
     category = Annotated[str, Field(description= "Enter the category of product")]
     price = Annotated[float,Field(description= "Enter the price", ge = 1) ]
+    stock = Annotated[int, Field(description= "This is the total stock left ")]
 
 
  "name": "Shoes",
