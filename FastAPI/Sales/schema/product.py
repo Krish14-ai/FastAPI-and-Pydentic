@@ -5,7 +5,7 @@ from typing import Dict
 from datetime import datetime
 
 class Product_class(BaseModel):
-    uiid : UUID
+    uid : UUID
     sku : Annotated[
                 str,
                 Field(
@@ -36,5 +36,23 @@ class Product_class(BaseModel):
 
     ## Validating SKU
     @field_validator("sku", mode = "after")
-    def Validate_sku():
-        pass
+    @classmethod
+    def Validate_sku(cls , value: str):
+        
+        if "-" not in value : 
+            raise ValueError("SKU must have '-' ")
+        
+        last = value.split("-")[-1]
+        
+        if not (len(last) == 3 and last.isdigit()):
+            raise ValueError("SKU must end with 3-digit sequence like this '-234' ")
+        
+        return value
+        
+
+    @model_validator(mode = "after")
+    def validate_business_rules(self):
+        if self.stock == 0 and self.in_stock is True: 
+            raise ValueError("If stock is 0, 'in_stock' must be 'False'")
+        
+        return self
