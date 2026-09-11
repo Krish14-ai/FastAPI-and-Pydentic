@@ -183,7 +183,7 @@ FastAPI extracts:
 student_id = 10
 ```
 
-### Type annotation
+## Type annotation
 
 ```python
 student_id: int
