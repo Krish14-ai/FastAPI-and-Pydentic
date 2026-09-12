@@ -41,7 +41,11 @@ class Seller(BaseModel):
     ]
     ]
     
-    
+    @field_validator("email", mode = "after")
+    @classmethod
+    def seller_email_validator(cls, value : EmailStr):
+        allowed_domains = []
+
     
 class Product_class(BaseModel):
     uid : UUID
