@@ -44,8 +44,26 @@ class Seller(BaseModel):
     @field_validator("email", mode = "after")
     @classmethod
     def seller_email_validator(cls, value : EmailStr):
-        allowed_domains = []
-
+        allowed_domains = [
+                "techhub.example",
+                "audioworld.example",
+                "chargepro.example",
+                "comfortworks.example",
+                "ecogoods.example",
+                "runfast.example",
+                "urbanwear.example",
+                "brighthome.example",
+                "datastore.example",
+                "booknest.example",
+                "soundbox.example",
+                "flexfit.example"
+        ]
+        
+        domain = str(value).split("@")[-1].lower()
+        if domain not in allowed_domains:
+            raise ValueError(f"{domain} is not allowed please use another Domain, Example = ['techhub.example','audioworld.example','chargepro.example',]")
+        
+        return value
     
 class Product_class(BaseModel):
     uid : UUID
