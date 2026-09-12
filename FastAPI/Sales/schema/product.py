@@ -1,9 +1,48 @@
-from pydantic import BaseModel, Field, field_validator, computed_field, model_validator
+from pydantic import( 
+                     BaseModel,
+                     Field,
+                     field_validator,
+                     computed_field,
+                     model_validator,
+                     EmailStr,
+                     AnyUrl
+                     )
 from typing import Annotated, Optional
 from uuid import UUID
 from typing import Dict
 from datetime import datetime
 
+
+class Seller(BaseModel):
+    id : UUID
+    name : Annotated[
+        str, 
+        Field(
+            max_length=50, 
+            min_length=2,
+            description= "Name of the Seller (2- 50 characters)",
+            examples = ["Apple Store India", "Mi Store"]
+        )]
+    email : EmailStr
+    website : AnyUrl
+    contact_1 : Annotated[
+                        str,
+                        Field(
+                            min_length=10,
+                            description= "Enter The Seller's Contact Number"
+                        )
+                        ]
+    contact_2 : Optional[Annotated[
+                        str, 
+                        Field(
+                            max_length= 10,
+                            description= "Enter The Seller's Second Contact Number"
+    )                    
+    ]
+    ]
+    
+    
+    
 class Product_class(BaseModel):
     uid : UUID
     sku : Annotated[
@@ -29,8 +68,7 @@ class Product_class(BaseModel):
     stock : Annotated[int, Field(description= "This is the total stock left ")]
     rating : Annotated[float, Field(gt =0, le =5 , description="Rating of Product")]
     in_stock : Annotated[bool, Field(description="Tells if the product is in stock")]
-    seller : Annotated[Dict, Field(description="Details of Seller")]
-    
+    seller : Seller
     created_time : datetime
 
 
