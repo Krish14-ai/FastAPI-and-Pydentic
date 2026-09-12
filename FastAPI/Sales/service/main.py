@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Query, Path
-import app
-from app import Product
+
+from service import Product
 from schema.product import Product_class
 
 
