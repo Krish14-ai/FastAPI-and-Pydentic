@@ -1,19 +1,29 @@
+#=======================================================================================
+## Imports
+#=======================================================================================
 from pydantic import( 
-                     BaseModel,
-                     Field,
-                     field_validator,
-                     computed_field,
-                     model_validator,
-                     EmailStr,
-                     AnyUrl
-                     )
+                    BaseModel,
+                    Field,
+                    field_validator,
+                    computed_field,
+                    model_validator,
+                    EmailStr,
+                    AnyUrl
+                )
 from typing import Annotated, Optional
 from uuid import UUID
 from typing import Dict
 from datetime import datetime
 
+#=======================================================================================
 
+
+#=======================================================================================
+## Seller Class
+#=======================================================================================
 class Seller(BaseModel):
+    
+## Attributes/Seller Data 
     id : UUID
     name : Annotated[
         str, 
@@ -23,7 +33,7 @@ class Seller(BaseModel):
             description= "Name of the Seller (2- 50 characters)",
             examples = ["Apple Store India", "Mi Store"]
         )]
-    email : EmailStr
+    email : Annotated[EmailStr,Field(description= "Enter Sellers Email with Relavent Domains", examples=["techhub.com","audioworld.com"])]
     website : AnyUrl
     contact_1 : Annotated[
                         str,
@@ -41,30 +51,38 @@ class Seller(BaseModel):
     ]
     ]
     
+#=======================================================================================
+## Email Validator
+#=======================================================================================
     @field_validator("email", mode = "after")
     @classmethod
     def seller_email_validator(cls, value : EmailStr):
         allowed_domains = [
-                "techhub.example",
-                "audioworld.example",
-                "chargepro.example",
-                "comfortworks.example",
-                "ecogoods.example",
-                "runfast.example",
-                "urbanwear.example",
-                "brighthome.example",
-                "datastore.example",
-                "booknest.example",
-                "soundbox.example",
-                "flexfit.example"
+                "techhub.com",
+                "audioworld.com",
+                "chargepro.com",
+                "comfortworks.com",
+                "ecogoods.com",
+                "runfast.com",
+                "urbanwear.com",
+                "brighthome.com",
+                "datastore.com",
+                "booknest.com",
+                "soundbox.com",
+                "flexfit.com"
         ]
         
         domain = str(value).split("@")[-1].lower()
         if domain not in allowed_domains:
-            raise ValueError(f"{domain} is not allowed please use another Domain, Example = ['techhub.example','audioworld.example','chargepro.example',]")
+            raise ValueError(f"{domain} is not allowed please use another Domain, com = ['techhub.com','audioworld.com','chargepro.com',]")
         
         return value
+#=======================================================================================
     
+    
+#=======================================================================================
+## Product Class
+#=======================================================================================
 class Product_class(BaseModel):
     uid : UUID
     sku : Annotated[
@@ -73,7 +91,7 @@ class Product_class(BaseModel):
                     max_length= 50, 
                     min_length=12,
                     description= "Stock Keeping Unit",
-                    examples=["ELEC-BPS-011","SPRT-YGM-012"]    
+                    examples= ["ELEC-BPS-011","SPRT-YGM-012"]    
                     )]
     name : Annotated[
                 str, 
@@ -94,7 +112,9 @@ class Product_class(BaseModel):
     created_time : datetime
 
 
+#=======================================================================================
     ## Validating SKU
+#=======================================================================================
     @field_validator("sku", mode = "after")
     @classmethod
     def Validate_sku(cls , value: str):
@@ -110,9 +130,11 @@ class Product_class(BaseModel):
         return value
         
 
+    ## For Validating Stocks
     @model_validator(mode = "after")
     def validate_business_rules(self):
         if self.stock == 0 and self.in_stock is True: 
             raise ValueError("If stock is 0, 'in_stock' must be 'False'")
         
         return self
+#=======================================================================================
