@@ -57,7 +57,7 @@ def remove_product(id : str):
     products = get_all_products()
     deleted = {}
     for idx, p in enumerate(products):
-        if p[id] == str(id):
+        if p["uid"] == id:
             deleted = products.pop(idx)
             save_product(products)
             return {"messege" : f"{deleted} has been deleted from the Data"}

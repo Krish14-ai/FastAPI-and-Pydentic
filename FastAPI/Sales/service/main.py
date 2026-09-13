@@ -1,13 +1,13 @@
 from fastapi import FastAPI, HTTPException, Query, Path
 from service.Product import (
     get_all_products,
+    get_product as get_product_service,
     add_product,
     remove_product
 )
 from schema.product import Product_class
 from typing import Literal
-from uuid import uuid4, UUID
-from datetime import datetime
+from uuid import UUID
 
 
 app = FastAPI()
@@ -18,6 +18,7 @@ def root():
     return {"message": "welcome"}
 
 
+# Get all products
 @app.get("/products/all")
 def get_everything():
     products = get_all_products()
@@ -26,16 +27,19 @@ def get_everything():
 
 # Get a specific product using UID
 @app.get("/products/{uid}")
-def get_product(uid: str):
+def get_product(uid: UUID):
     try:
-        return {"message": get_product(uid)}
+        return {
+            "message": get_product_service(str(uid))
+        }
     except ValueError:
         raise HTTPException(
             status_code=404,
             detail="Product not found"
         )
 
-## Get products
+
+# Get products
 @app.get("/products")
 def list_products(
     name: str = Query(
@@ -97,7 +101,7 @@ def list_products(
             reverse=reverse
         )
 
-    # Total BEFORE pagination
+    # Total before pagination
     total = len(products)
 
     # Pagination
@@ -116,24 +120,34 @@ def list_products(
 def create_product(product: Product_class):
 
     product_dict = product.model_dump(mode="json")
-    product_dict["id"] = str(uuid4())
-    product_dict["created_at"] = datetime.utcnow().isoformat() + "Z"
 
-    try :
+    try:
         add_product(product_dict)
-    except ValueError as e: 
-        raise HTTPException(status_code  =400, detail =str(e) )
-    return product.model_dump(mode = "json")
+
+    except ValueError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=str(e)
+        )
+
+    return product_dict
 
 
-@app.delete("/product/{product_id}")
-def delete_product(product_id : UUID = Path(..., description= "Product ID", example=UUID)):
-    
-    try :
-        res = remove_product(str(product_id))
-        return res
-    except Exception as e:
-        raise HTTPException(status_code= 404, detail = str(e))
+# Delete product
+@app.delete("/products/{uid}")
+def delete_product(
+    uid: UUID = Path(
+        ...,
+        description="Product UID"
+    )
+):
 
-    
-    
+    try:
+        result = remove_product(str(uid))
+        return result
+
+    except ValueError as e:
+        raise HTTPException(
+            status_code=404,
+            detail=str(e)
+        )
