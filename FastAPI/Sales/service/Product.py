@@ -41,6 +41,7 @@ def save_product(new_product : List[Dict]) -> None:
 
 ## Add Prodct
 def add_product(new_product : Dict) -> Dict:
+
     products = get_all_products()
     
     if any(p["sku"] == new_product["sku"] for p in products):
@@ -49,3 +50,14 @@ def add_product(new_product : Dict) -> Dict:
     products.append(new_product)
     save_product(products)
     return new_product
+
+
+## Deleting a Product
+def remove_product(id : str):
+    products = get_all_products()
+    deleted = {}
+    for idx, p in enumerate(products):
+        if p[id] == str(id):
+            deleted = products.pop(idx)
+            save_product(products)
+            return {"messege" : f"{deleted} has been deleted from the Data"}
