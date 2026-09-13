@@ -1,8 +1,9 @@
 from fastapi import FastAPI, HTTPException, Query, Path
-from service import Product
-from Product import get_all_products, add_product
+from service.Product import get_all_products, add_product
 from schema.product import Product_class
 from typing import Literal
+from uuid import uuid4
+from datetime import datetime
 
 
 app = FastAPI()
@@ -64,7 +65,7 @@ def list_products(
     ),
 ):
 
-    products = Product.get_all_products()
+    products = get_all_products()
 
     # Filter by name
     if name:
@@ -111,8 +112,8 @@ def list_products(
 def create_product(product: Product_class):
 
     product_dict = product.model_dump(mode="json")
-
-    Product.add_product(product_dict)
+    product_dict["id"] = str(uuid4())
+    product_dict["created_at"] = datetime.utcnow().isoformat() + "Z"
 
     try :
         add_product(product_dict)
