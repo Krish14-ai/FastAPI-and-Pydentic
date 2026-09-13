@@ -5,7 +5,7 @@ import json
 
 app = FastAPI()
 
-base_path = Path(__file__).resolve().parent
+base_path = Path(__file__).resolve().parent.parent
 path = base_path/"data"/"dummy.json"
 
 ## To get a specific Product
@@ -34,4 +34,8 @@ def load_products() -> List[Dict]:
 def get_all_products() -> List[Dict]:
     return load_products()
 
-    
+
+## Save a new Product
+def save_product(product : List[Dict]) -> None:
+    with open(path,'w', encoding= "utf-8") as f:
+        json.dump(product, f, indent=2,ensure_ascii= False)
