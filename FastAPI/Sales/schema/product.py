@@ -33,20 +33,22 @@ class Seller(BaseModel):
             description= "Name of the Seller (2- 50 characters)",
             examples = ["Apple Store India", "Mi Store"]
         )]
-    email : Annotated[EmailStr,Field(description= "Enter Sellers Email with Relavent Domains", examples=["techhub.com","audioworld.com"])]
+    email : Annotated[EmailStr,Field(description= "Enter Sellers Email with Relavent Domains", examples=["techiguy123@techhub.com","audio123@audioworld.com"])]
     website : AnyUrl
     contact_1 : Annotated[
                         str,
                         Field(
                             min_length=10,
-                            description= "Enter The Seller's Contact Number"
+                            description= "Enter The Seller's Contact Number",
+                            examples = ["1234567890","0987654321"]
                         )
                         ]
     contact_2 : Optional[Annotated[
                         str, 
                         Field(
                             max_length= 10,
-                            description= "Enter The Seller's Second Contact Number"
+                            description= "Enter The Seller's Second Contact Number",
+                            examples = ["1234567890","0987654321"]
     )                    
     ]
     ]
