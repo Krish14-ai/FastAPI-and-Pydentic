@@ -1,9 +1,7 @@
-from fastapi import FastAPI
 from typing import List, Dict
 from pathlib import Path
 import json
 
-app = FastAPI()
 
 base_path = Path(__file__).resolve().parent.parent
 path = base_path/"data"/"dummy.json"
