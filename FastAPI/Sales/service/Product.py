@@ -31,11 +31,23 @@ def load_products() -> List[Dict]:
 
 
 ## to get all the Products
-def get_all_products() -> List[Dict]:
+def get_all_products() -> list[Dict]:
     return load_products()
 
 
 ## Save a new Product
-def save_product(product : List[Dict]) -> None:
+def save_product(new_product : List[Dict]) -> None:
     with open(path,'w', encoding= "utf-8") as f:
-        json.dump(product, f, indent=2,ensure_ascii= False)
+        json.dump(new_product, f, indent=2,ensure_ascii= False)
+    
+
+## Add Prodct
+def add_product(new_product : Dict) -> Dict:
+    products = get_all_products()
+    
+    if any(p["sku"] == new_product["sku"] for p in products):
+        raise ValueError("SKU already exist")
+    
+    products.append(new_product)
+    save_product(products)
+    return new_product
