@@ -99,7 +99,7 @@ class Product_class(BaseModel):
                 str, 
                 Field(
                     max_length= 100, 
-                    min_length= 0, 
+                    min_length= 2, 
                     title= "Product Name",
                     examples=["shoes", "phones"],
                     description= "Please Enter a product name"
@@ -143,23 +143,51 @@ class Product_class(BaseModel):
 
 
 #=======================================================================================
+## Seller Update Class
+#=======================================================================================
+class SellerUpdate(BaseModel):
+        
+        name : Optional[str]=Field(
+                max_length=50, 
+                min_length=2,
+                description= "Name of the Seller (2- 50 characters)",
+                examples = ["Apple Store India", "Mi Store"]
+            )
+        email : Optional[EmailStr]=Field(description= "Enter Sellers Email with Relavent Domains", examples=["techiguy123@techhub.com","audio123@audioworld.com"])
+        website : AnyUrl
+        contact_1 : Optional[str]=Field(
+                                min_length=10,
+                                description= "Enter The Seller's Contact Number",
+                                examples = ["1234567890","0987654321"]
+                            )
+                            
+        contact_2 : Optional[Annotated[
+                            str, 
+                            Field(
+                                max_length= 10,
+                                description= "Enter The Seller's Second Contact Number",
+                                examples = ["1234567890","0987654321"]
+        )                    
+        ]
+        ]
+        
+#=======================================================================================
 ## Product Update Class
 #=======================================================================================
 class Product_update(BaseModel):
-        name : Annotated[
-                str, 
-                Field(
+    
+    name : Optional[str]= Field(
                     max_length= 100, 
-                    min_length= 0, 
+                    min_length= 2, 
                     title= "Product Name",
                     examples=["shoes", "phones"],
                     description= "Please Enter a product name"
                     )
-                    ]
-    category : Annotated[str, Field(description= "Enter the category of product")]
-    price : Annotated[float,Field(description= "Enter the price", ge = 1) ]
-    stock : Annotated[int, Field(description= "This is the total stock left ")]
-    rating : Annotated[float, Field(gt =0, le =5 , description="Rating of Product")]
-    in_stock : Annotated[bool, Field(description="Tells if the product is in stock")]
-    seller : Seller
-    created_time : datetime
+                    
+    category : Optional[str]= Field(description= "Enter the category of product")
+    price : Optional[float] = Field(description= "Enter the price", ge = 1) 
+    stock : Optional[int]  =Field(description= "This is the total stock left ")
+    rating : Optional[float] = Field(gt =0, le =5 , description="Rating of Product")
+    in_stock : Optional[bool]= Field(description="Tells if the product is in stock")
+    seller : SellerUpdate
+
