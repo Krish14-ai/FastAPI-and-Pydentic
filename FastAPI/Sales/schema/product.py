@@ -175,6 +175,31 @@ class SellerUpdate(BaseModel):
         )                    
         ]
         ]
+        
+        @field_validator("email", mode = "after")
+        @classmethod
+        def seller_email_validator(cls, value : EmailStr):
+            allowed_domains = [
+                    "techhub.com",
+                    "audioworld.com",
+                    "chargepro.com",
+                    "comfortworks.com",
+                    "ecogoods.com",
+                    "runfast.com",
+                    "urbanwear.com",
+                    "brighthome.com",
+                    "datastore.com",
+                    "booknest.com",
+                    "soundbox.com",
+                    "flexfit.com"
+            ]
+            
+            domain = str(value).split("@")[-1].lower()
+            if domain not in allowed_domains:
+                raise ValueError(f"{domain} is not allowed please use another Domain, com = ['techhub.com','audioworld.com','chargepro.com',]")
+            
+            return value
+    
 
 #=======================================================================================
     
