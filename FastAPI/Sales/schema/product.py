@@ -224,6 +224,8 @@ class Product_update(BaseModel):
     rating : Optional[float] = Field(gt =0, le =5 , description="Rating of Product")
     in_stock : Optional[bool]= Field(description="Tells if the product is in stock")
     seller : SellerUpdate
+    
+    
 
 #=======================================================================================
     
