@@ -61,3 +61,8 @@ def remove_product(id : str):
             deleted = products.pop(idx)
             save_product(products)
             return {"messege" : f"{deleted} has been deleted from the Data"}
+        
+
+## Updating
+def Update_product(product_id : str, update_data : Dict):
+    pass
