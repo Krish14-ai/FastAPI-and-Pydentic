@@ -79,6 +79,7 @@ class Seller(BaseModel):
             raise ValueError(f"{domain} is not allowed please use another Domain, com = ['techhub.com','audioworld.com','chargepro.com',]")
         
         return value
+
 #=======================================================================================
     
     
@@ -139,6 +140,7 @@ class Product_class(BaseModel):
             raise ValueError("If stock is 0, 'in_stock' must be 'False'")
         
         return self
+
 #=======================================================================================
 
 
@@ -170,6 +172,9 @@ class SellerUpdate(BaseModel):
         )                    
         ]
         ]
+
+#=======================================================================================
+    
         
 #=======================================================================================
 ## Product Update Class
@@ -191,3 +196,5 @@ class Product_update(BaseModel):
     in_stock : Optional[bool]= Field(description="Tells if the product is in stock")
     seller : SellerUpdate
 
+#=======================================================================================
+    
