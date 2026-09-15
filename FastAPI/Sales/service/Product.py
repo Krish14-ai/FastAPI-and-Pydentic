@@ -65,4 +65,10 @@ def remove_product(id : str):
 
 ## Updating
 def Update_product(product_id : str, update_data : Dict):
-    pass
+    products = get_all_products()
+    for idx, product in enumerate(products):
+        
+        for key,value in update_data.items():
+            
+            if isinstance(value, dict) and isinstance(product.get(key), dict):
+                pass
