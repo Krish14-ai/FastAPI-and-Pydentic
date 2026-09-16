@@ -4,7 +4,8 @@ import json
 
 
 base_path = Path(__file__).resolve().parent.parent
-path = base_path/"data"/"dummy.json"
+data_path = base_path/"data"
+path = data_path/"products.json"
 
 ## To get a specific Product
 def get_product(id : int):
@@ -69,16 +70,17 @@ def Update_product(product_id : str, update_data : Dict):
     
     for idx, product in enumerate(products):
         
-        for key,value in update_data.items():
-            
-            if isinstance(value, dict) and isinstance(product.get(key), dict):
-                product[key].update(value)
-            
-            else : 
-                product[key] = value
+        if  product["uid"] == product_id :
+            for key,value in update_data.items():
                 
-        products[idx] = product
-        save_product(products)
-        return product
-        
+                if isinstance(value, dict) and isinstance(product.get(key), dict):
+                    product[key].update(value)
+                
+                else : 
+                    product[key] = value
+                    
+            products[idx] = product
+            save_product(products)
+            return product
+            
     raise ValueError("Product not found!")
