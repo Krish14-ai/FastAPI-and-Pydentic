@@ -12,7 +12,6 @@ from pydantic import(
                 )
 from typing import Annotated, Optional
 from uuid import UUID
-from typing import Dict
 from datetime import datetime
 
 #=======================================================================================
@@ -160,25 +159,14 @@ class SellerUpdate(BaseModel):
             )
         email : Optional[EmailStr]=Field(description= "Enter Sellers Email with Relavent Domains", examples=["techiguy123@techhub.com","audio123@audioworld.com"])
         website : Optional[AnyUrl]
-        contact_1 : Optional[str]=Field(
-                                min_length=10,
-                                description= "Enter The Seller's Contact Number",
-                                examples = ["1234567890","0987654321"]
-                            )
+        contact_1 : Optional[str]
                             
-        contact_2 : Optional[Annotated[
-                            str, 
-                            Field(
-                                max_length= 10,
-                                description= "Enter The Seller's Second Contact Number",
-                                examples = ["1234567890","0987654321"]
-        )                    
-        ]
-        ]
+        contact_2 : Optional[str]
+        
         
         @field_validator("email", mode = "after")
         @classmethod
-        def seller_email_validator(cls, value : EmailStr):
+        def sellerupdate_email_validator(cls, value : EmailStr):
             allowed_domains = [
                     "techhub.com",
                     "audioworld.com",
