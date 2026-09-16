@@ -155,7 +155,27 @@ def delete_product(
         
 ## Updating product
 @app.patch("/products/update/{product_id}")
-def update(product_id : str = Path(..., description="Product UUID"), payload: Product_update = ... ):
-    try : 
-        update_product = Update_product(product_id, payload.model_dump(mode = "json", exclude_unset=True))
+def update(
+    product_id: str = Path(
+        ...,
+        description="Product UUID"
+    ),
+    payload: Product_update = ...,
+):
+    try:
+        result = Update_product(
+            str(product_id),
+            payload.model_dump(
+                mode="json",
+                exclude_unset=True
+            )
+        )
+
+        return result
+
+    except ValueError as e:
+        raise HTTPException(
+            status_code=404,
+            detail=str(e)
+        )
     
