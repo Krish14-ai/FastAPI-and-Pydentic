@@ -198,7 +198,15 @@ class SellerUpdate(BaseModel):
 ## Updates in Product 
 #=======================================================================================
 class Product_update(BaseModel):
-    
+    uid : UUID
+    sku : Annotated[
+                str,
+                Field(
+                    max_length= 50, 
+                    min_length=12,
+                    description= "Stock Keeping Unit",
+                    examples= ["ELEC-BPS-011","SPRT-YGM-012"]    
+                    )]
     name : Optional[str]= Field(
                     max_length= 100, 
                     min_length= 2, 
