@@ -154,7 +154,7 @@ def delete_product(
         )
         
 ## Updating product
-@app.patch("/products/update/{product_id}")
+@app.put("/products/update/{product_id}")
 def update(
     product_id: str = Path(
         ...,
