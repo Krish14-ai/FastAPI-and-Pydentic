@@ -159,7 +159,7 @@ class SellerUpdate(BaseModel):
                 examples = ["Apple Store India", "Mi Store"]
             )
         email : Optional[EmailStr]=Field(description= "Enter Sellers Email with Relavent Domains", examples=["techiguy123@techhub.com","audio123@audioworld.com"])
-        website : AnyUrl
+        website : Optional[AnyUrl]
         contact_1 : Optional[str]=Field(
                                 min_length=10,
                                 description= "Enter The Seller's Contact Number",
@@ -205,7 +205,8 @@ class SellerUpdate(BaseModel):
     
         
 
-#=======================================================================================
+#======================================================
+# =================================
 ## Updates in Product 
 #=======================================================================================
 class Product_update(BaseModel):
@@ -224,7 +225,6 @@ class Product_update(BaseModel):
     rating : Optional[float] = Field(gt =0, le =5 , description="Rating of Product")
     in_stock : Optional[bool]= Field(description="Tells if the product is in stock")
     seller : SellerUpdate
-    
     
 
 #=======================================================================================
