@@ -3,9 +3,10 @@ from service.Product import (
     get_all_products,
     get_product as get_product_service,
     add_product,
-    remove_product
+    remove_product, 
+    Update_product
 )
-from schema.product import Product_class
+from schema.product import Product_class,Product_update
 from typing import Literal
 from uuid import UUID
 
@@ -151,3 +152,10 @@ def delete_product(
             status_code=404,
             detail=str(e)
         )
+        
+## Updating product
+@app.patch("/products/update/{product_id}")
+def update(product_id : str = Path(..., description="Product UUID"), payload: Product_update = ... ):
+    try : 
+        update_product = Update_product(product_id, payload.model_dump(mode = "json", exclude_unset=True))
+    

@@ -71,4 +71,13 @@ def Update_product(product_id : str, update_data : Dict):
         for key,value in update_data.items():
             
             if isinstance(value, dict) and isinstance(product.get(key), dict):
-                pass
+                product[key].update(value)
+            
+            else : 
+                product[key] = value
+                
+        products[idx] = product
+        save_product(products)
+        return product
+    
+    raise ValueError("Product not found!")
