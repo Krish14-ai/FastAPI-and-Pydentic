@@ -27,7 +27,7 @@ def get_everything():
 
 
 # Get a specific product using UID
-@app.get("/products/{uid}")
+@app.get("/products/{uid}",response_model=Product_class)
 def get_product(uid: UUID):
     try:
         return {
