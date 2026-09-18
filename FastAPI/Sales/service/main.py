@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Query, Path
 from service.Product import (
     get_all_products,
-    get_product as get_product_service,
+    get_product_by_id ,
     add_product,
     remove_product, 
     Update_product
@@ -30,9 +30,8 @@ def get_everything():
 @app.get("/products/{uid}",response_model=Product_class)
 def get_product(uid: UUID):
     try:
-        return {
-            "message": get_product_service(str(uid))
-        }
+        return get_product_by_id(str(uid))
+        
     except ValueError:
         raise HTTPException(
             status_code=404,

@@ -8,15 +8,19 @@ data_path = base_path/"data"
 path = data_path/"products.json"
 
 ## To get a specific Product
-def get_product(id : int):
+def get_product_by_id(id : str):
     if not path.exists() : 
         raise FileNotFoundError("Data not found")
 
-     
+    
     with open(path,'r')as f :
         products = json.load(f)
+    
+    for p in products:
+        if p["uid"] == id:
+            return p
+    return {"message": "Product not found"}
 
-    return products[id]
 
 
 ## Returns all the Products
