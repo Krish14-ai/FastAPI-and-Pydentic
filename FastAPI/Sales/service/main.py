@@ -7,7 +7,7 @@ from service.Product import (
     Update_product
 )
 from schema.product import Product_class,Product_update
-from typing import Literal
+from typing import Literal, Dict
 from uuid import UUID
 
 
@@ -20,7 +20,7 @@ def root():
 
 
 # Get all products
-@app.get("/products/all")
+@app.get("/products", response_model=Dict)
 def get_everything():
     products = get_all_products()
     return {"message": products}
